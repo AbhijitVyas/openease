@@ -59,17 +59,16 @@ server {
     {{ range $container := $containers }}
       {{ if $container.Env.VIRTUAL_PORT }}
         {{ range $i, $address := $container.Addresses }}
+        {{ $network := index $container.Networks 0 }}
           {{ if eq $address.Port $container.Env.VIRTUAL_PORT }}
   # Container {{ $host }}
             {{ if eq $host "flask" }}
   location / {
-            {{ else if $container.Env.OPEN_EASE_WEBAPP }}
-  location /{{ $host }}/ {
             {{ else }}
   location /ws/{{ $host }}/ {
     rewrite /ws/{{ $host }}/(.*) /$1 break;
             {{ end }}
-    proxy_pass http://{{ $host }}:{{ $address.Port }};
+    proxy_pass http://{{ $network.IP }}:{{ $address.Port }};
           {{ end }}
         {{ end }}
       {{ end }}

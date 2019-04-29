@@ -62,7 +62,7 @@ server {
         {{ $network := index $container.Networks 0 }}
           {{ if eq $address.Port $container.Env.VIRTUAL_PORT }}
   # Container {{ $host }}
-            {{ if eq $host "flask" }}
+            {{ if eq $host "openease" }}
   location / {
             {{ else }}
   location /ws/{{ $host }}/ {

@@ -68,27 +68,34 @@ services:
       - secret:/etc/ease_secret
 
   # a volume that holds CSS code
-  flask_css:
+  openease_css:
     image: "openease/css"
     volumes:
-      - css:/opt/webapp/webrob/static/css
+      - openease_css:/opt/webapp/webrob/static/css
 
   # a volume that holds JS code
-  flask_js:
+  openease_core:
     image: "openease/js"
     volumes:
-      - js:/opt/webapp/webrob/static/lib
+      - openease_core:/opt/webapp/webrob/static/lib
   
   # a volume that holds JS code to interface the D3 library
-  flask_d3:
+  chart_vis:
     image: "openease/d3"
     volumes:
-      - d3:/opt/webapp/webrob/static/lib/chart
+      - chart_vis:/opt/webapp/webrob/static/lib/chart
+  
+  # a volume that holds JS code to interface the THREEJS library for ROS marker visualization
+  marker_vis:
+    image: "openease/threejs"
+    volumes:
+      - marker_vis:/opt/webapp/webrob/static/lib/vis
   
   # the openEASE flask webapp
-  flask:
+  openease:
     image: "openease/flask"
-    container_name: flask
+    container_name: openease
+    # NOTE: wait until postgres is available before calling runserver.py
     command: /opt/webapp/wait.sh postgres python /opt/webapp/runserver.py
     ports:
       - "5000:5000"
@@ -99,14 +106,15 @@ services:
     volumes:
       - secret:/etc/ease_secret:ro
       - lft:/tmp/openEASE/dockerbridge
-      - ${OPENEASE_EPISODE_DATA}:/episodes
-      - meshes:/home/ros/mesh_data
-      - js:/opt/webapp/webrob/static/lib
-      - css:/opt/webapp/webrob/static/css
-      - d3:/opt/webapp/webrob/static/lib/chart
+      - openease_core:/opt/webapp/webrob/static/lib
+      - openease_css:/opt/webapp/webrob/static/css
+      - chart_vis:/opt/webapp/webrob/static/lib/chart # TODO: use multirepo instead
+      - marker_vis:/opt/webapp/webrob/static/lib/vis  # TODO: use multirepo instead
+      - ${OPENEASE_EPISODE_DATA}:/episodes            # TODO: use multirepo instead
+      - meshes:/home/ros/mesh_data                    # TODO: use multirepo instead
     environment:
       # these are for docker-gen to recognize this container
-      - VIRTUAL_HOST=flask
+      - VIRTUAL_HOST=openease
       - VIRTUAL_PORT=5000
       - EASE_DEBUG=true
       # Workaround for container using legacy Docker links
@@ -128,6 +136,24 @@ services:
       - TWITTER_APP_SECRET=${TWITTER_APP_SECRET}
       - GOOGLE_APP_SECRET=${GOOGLE_APP_SECRET}
       - GOOGLE_APP_ID=${GOOGLE_APP_ID}
+  #docker_compose_ui:
+    #restart: always
+    #image: francescou/docker-compose-ui:1.13.0
+    #container_name: docker_compose_ui
+    #hostname: docker_compose_ui
+    #working_dir: /opt/docker-compose-projects/
+    #environment:
+    #- 'WEB_CONSOLE_PATTERN=/web-console/?cid={containerName}&cmd={command}'
+    #volumes:
+    #- /var/run/docker.sock:/var/run/docker.sock
+  #web_console:
+    #image: bitbull/docker-exec-web-console
+    #environment:
+    #- 'CONTEXT_PATH=/web-console/'
+    #read_only: true
+    #restart: always
+    #volumes:
+    #- /var/run/docker.sock:/var/run/docker.sock
 volumes:
   # large file transfer volume
   lft:
@@ -135,18 +161,15 @@ volumes:
   secret:
   # sql data volume
   postgres:
-  # mongo data volume
-  # TODO: each user should have one after episode selection, multirepo
-  mongo:
-  # mesh data
-  # TODO: each user should have one after episode selection, multirepo
-  meshes:
   # nginx configuration
   nginx:
   # openEASE CSS code
-  css:
+  openease_css:
   # openEASE JS code
-  js:
-  # openEASE D3 code
-  # TODO: allow episodes to depend on specific version of this library.
-  d3:
+  openease_core:
+  # openEASE D3/THREEJS code
+  chart_vis:  # TODO: use multirepo instead
+  marker_vis: # TODO: use multirepo instead
+  # mongo & mesh data volume
+  mongo:  # TODO: use multirepo instead
+  meshes: # TODO: use multirepo instead

@@ -55,6 +55,7 @@ services:
   mongo:
     image: "mongo"
     container_name: mongo
+    network_mode: bridge
     volumes:
       - mongo:/data/db
     #ports:
@@ -110,7 +111,7 @@ services:
       - openease_css:/opt/webapp/webrob/static/css
       - chart_vis:/opt/webapp/webrob/static/lib/chart # TODO: use multirepo instead
       - marker_vis:/opt/webapp/webrob/static/lib/vis  # TODO: use multirepo instead
-      - ${OPENEASE_EPISODE_DATA}:/episodes            # TODO: use multirepo instead
+      - episodes_data:/episodes                       # TODO: use multirepo instead
       - meshes:/home/ros/mesh_data                    # TODO: use multirepo instead
     environment:
       # these are for docker-gen to recognize this container
@@ -122,6 +123,8 @@ services:
       - POSTGRES_PORT_5432_TCP_PORT=5432
       - DOCKERBRIDGE_PORT_5001_TCP_ADDR=dockerbridge
       - DOCKERBRIDGE_PORT_5001_TCP_PORT=5001
+      - MONGO_PORT_27017_TCP_ADDR=172.17.42.1
+      - MONGO_PORT_27017_TCP_PORT=27017
       #
       - OPENEASE_ADMIN_PASSWORD=${OPENEASE_ADMIN_PASSWORD}
       - OPENEASE_MAIL_USERNAME=${OPENEASE_MAIL_USERNAME}
@@ -155,6 +158,12 @@ services:
     #volumes:
     #- /var/run/docker.sock:/var/run/docker.sock
 volumes:
+  episodes_data:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: ${OPENEASE_EPISODE_DATA}
   # large file transfer volume
   lft:
   # secret key volume

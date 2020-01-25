@@ -1,4 +1,6 @@
-version: '2'
+version: '3'
+networks:
+  openease:
 services:
   # Nginx serves requests on port 80/443 through rediecting
   # to flask and other web applications.
@@ -8,6 +10,8 @@ services:
     ports:
       - "80:80"
       - "443:443"
+    #networks:
+    #  - openease
     volumes:
       - nginx:/etc/nginx/conf.d
       - ./certs:/etc/nginx/certs
@@ -21,6 +25,8 @@ services:
     image: jwilder/docker-gen
     container_name: docker-gen
     command: -notify-sighup nginx -watch /etc/docker-gen/templates/nginx.tmpl /etc/nginx/conf.d/default.conf
+    networks:
+      - openease
     volumes:
       - /var/run/docker.sock:/tmp/docker.sock:ro
       - ./nginx.tmpl:/etc/docker-gen/templates/nginx.tmpl
@@ -31,6 +37,8 @@ services:
   dockerbridge:
     image: "openease/dockerbridge"
     container_name: dockerbridge
+    networks:
+      - openease
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
@@ -42,6 +50,8 @@ services:
   postgres:
     image: "openease/postgres"
     container_name: postgres
+    networks:
+      - openease
     volumes:
       - postgres:/var/lib/postgresql/data
     environment:
@@ -56,7 +66,8 @@ services:
   mongo:
     image: "mongo"
     container_name: mongo
-    network_mode: bridge
+    networks:
+      - openease
     volumes:
       - mongo:/data/db
     #ports:
@@ -101,10 +112,8 @@ services:
     command: /opt/webapp/wait.sh postgres python /opt/webapp/runserver.py
     ports:
       - "5000:5000"
-    links:
-      - postgres
-      - dockerbridge
-      - mongo
+    networks:
+      - openease
     volumes:
       - secret:/etc/ease_secret:ro
       - lft:/tmp/openEASE/dockerbridge
@@ -124,7 +133,7 @@ services:
       - POSTGRES_PORT_5432_TCP_PORT=5432
       - DOCKERBRIDGE_PORT_5001_TCP_ADDR=dockerbridge
       - DOCKERBRIDGE_PORT_5001_TCP_PORT=5001
-      - MONGO_PORT_27017_TCP_ADDR=172.17.42.1
+      - MONGO_PORT_27017_TCP_ADDR=mongo
       - MONGO_PORT_27017_TCP_PORT=27017
       #
       - OPENEASE_ADMIN_PASSWORD=${OPENEASE_ADMIN_PASSWORD}

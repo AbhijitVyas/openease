@@ -42,7 +42,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - OPENEASE_EPISODE_DATA=${OPENEASE_EPISODE_DATA}
+      - NEEM_DIR=/NEEMs-ws
       - EASE_DEBUG=${EASE_DEBUG}
 
   # postgres is used to store e.g. user accounts, roles,
@@ -56,22 +56,6 @@ services:
       - postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=docker
-  
-  # mongo holds episodic memory data
-  # TODO: spawn one for each user after an episode 
-  #       has been selected, and only load the data of
-  #       that specific episode.
-  #       - use multirepo to hold imported mongo data
-  #       - then use the multirepo folder as volume for that mongo instance
-  #mongo:
-  #  image: "mongo"
-  #  container_name: mongo
-  #  networks:
-  #    - openease
-  #  volumes:
-  #    - mongo:/data/db
-  #  #ports:
-  #  #  - "27017:27017"
 
   # a volume that holds a secret key
   secret_init:
@@ -87,10 +71,10 @@ services:
       - openease_css:/opt/webapp/webrob/static/css
 
   # a volume that holds JS code
-  openease_core:
+  openease_js:
     image: "openease/js"
     volumes:
-      - openease_core:/opt/webapp/webrob/static/lib
+      - openease_js:/opt/webapp/webrob/static/lib
   
   # a volume that holds JS code to interface the D3 library
   chart_vis:
@@ -117,9 +101,10 @@ services:
     volumes:
       - secret:/etc/ease_secret:ro
       - lft:/tmp/openEASE/dockerbridge
-      - openease_core:/opt/webapp/webrob/static/lib
+      - openease_js:/opt/webapp/webrob/static/lib
       - openease_css:/opt/webapp/webrob/static/css
       - neems:/neems
+      - neems_meta:/neems_meta
       - chart_vis:/opt/webapp/webrob/static/lib/chart # TODO: use multirepo instead
       - marker_vis:/opt/webapp/webrob/static/lib/vis  # TODO: use multirepo instead
       - meshes:/home/ros/mesh_data                    # TODO: use multirepo instead
@@ -133,8 +118,6 @@ services:
       - POSTGRES_PORT_5432_TCP_PORT=5432
       - DOCKERBRIDGE_PORT_5001_TCP_ADDR=dockerbridge
       - DOCKERBRIDGE_PORT_5001_TCP_PORT=5001
-      #- MONGO_PORT_27017_TCP_ADDR=mongo
-      #- MONGO_PORT_27017_TCP_PORT=27017
       #
       - OPENEASE_ADMIN_PASSWORD=${OPENEASE_ADMIN_PASSWORD}
       - OPENEASE_MAIL_USERNAME=${OPENEASE_MAIL_USERNAME}
@@ -173,7 +156,13 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /home/daniel/NEEMs
+      device: /NEEMs-ws
+  neems_meta:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: /NEEMs
   # large file transfer volume
   lft:
   # secret key volume
@@ -185,10 +174,8 @@ volumes:
   # openEASE CSS code
   openease_css:
   # openEASE JS code
-  openease_core:
+  openease_js:
   # openEASE D3/THREEJS code
   chart_vis:  # TODO: use multirepo instead
   marker_vis: # TODO: use multirepo instead
-  # mongo & mesh data volume
-  #mongo:  # TODO: use multirepo instead
   meshes: # TODO: use multirepo instead

@@ -76,18 +76,6 @@ services:
     volumes:
       - openease_js:/opt/webapp/webrob/static/lib
   
-  # a volume that holds JS code to interface the D3 library
-  chart_vis:
-    image: "openease/d3"
-    volumes:
-      - chart_vis:/opt/webapp/webrob/static/lib/chart
-  
-  # a volume that holds JS code to interface the THREEJS library for ROS marker visualization
-  marker_vis:
-    image: "openease/threejs"
-    volumes:
-      - marker_vis:/opt/webapp/webrob/static/lib/vis
-  
   # the openEASE flask webapp
   openease:
     image: "openease/flask"
@@ -105,8 +93,6 @@ services:
       - openease_css:/opt/webapp/webrob/static/css
       - neems:/neems
       - neems_meta:/neems_meta
-      - chart_vis:/opt/webapp/webrob/static/lib/chart # TODO: use multirepo instead
-      - marker_vis:/opt/webapp/webrob/static/lib/vis  # TODO: use multirepo instead
       - meshes:/home/ros/mesh_data                    # TODO: use multirepo instead
     environment:
       # these are for docker-gen to recognize this container
@@ -175,7 +161,4 @@ volumes:
   openease_css:
   # openEASE JS code
   openease_js:
-  # openEASE D3/THREEJS code
-  chart_vis:  # TODO: use multirepo instead
-  marker_vis: # TODO: use multirepo instead
   meshes: # TODO: use multirepo instead

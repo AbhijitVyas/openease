@@ -69,12 +69,6 @@ services:
     image: "openease/css"
     volumes:
       - openease_css:/opt/webapp/webrob/static/css
-
-  # a volume that holds JS code
-  openease_js:
-    image: "openease/js"
-    volumes:
-      - openease_js:/opt/webapp/webrob/static/lib
   
   # the openEASE flask webapp
   openease:
@@ -89,11 +83,10 @@ services:
     volumes:
       - secret:/etc/ease_secret:ro
       - lft:/tmp/openEASE/dockerbridge
-      - openease_js:/opt/webapp/webrob/static/lib
       - openease_css:/opt/webapp/webrob/static/css
       - neems:/neems
       - neems_meta:/neems_meta
-      - meshes:/home/ros/mesh_data                    # TODO: use multirepo instead
+      - mesh_data:/home/ros/mesh_data
     environment:
       # these are for docker-gen to recognize this container
       - VIRTUAL_HOST=openease
@@ -149,6 +142,8 @@ volumes:
       type: 'none'
       o: 'bind'
       device: /NEEMs
+  # TODO: this should be a more general NEEM data-depependencies volume.
+  mesh_data: 
   # large file transfer volume
   lft:
   # secret key volume
@@ -159,6 +154,3 @@ volumes:
   nginx:
   # openEASE CSS code
   openease_css:
-  # openEASE JS code
-  openease_js:
-  meshes: # TODO: use multirepo instead

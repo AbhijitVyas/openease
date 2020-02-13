@@ -63,12 +63,6 @@ services:
     command: sh -c '< /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c 64 > /etc/ease_secret/secret'
     volumes:
       - secret:/etc/ease_secret
-
-  # a volume that holds CSS code
-  openease_css:
-    image: "openease/css"
-    volumes:
-      - openease_css:/opt/webapp/webrob/static/css
   
   # the openEASE flask webapp
   openease:
@@ -83,7 +77,6 @@ services:
     volumes:
       - secret:/etc/ease_secret:ro
       - lft:/tmp/openEASE/dockerbridge
-      - openease_css:/opt/webapp/webrob/static/css
       - neems:/neems
       - neems_meta:/neems_meta
       - mesh_data:/home/ros/mesh_data
@@ -152,5 +145,3 @@ volumes:
   postgres:
   # nginx configuration
   nginx:
-  # openEASE CSS code
-  openease_css:

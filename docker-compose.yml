@@ -42,7 +42,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - NEEM_DIR=/NEEMs-ws
+      - NEEM_DIR=/NEEMs
       - EASE_DEBUG=${EASE_DEBUG}
 
   # postgres is used to store e.g. user accounts, roles,
@@ -78,7 +78,6 @@ services:
       - secret:/etc/ease_secret:ro
       - lft:/tmp/openEASE/dockerbridge
       - neems:/neems
-      - neems_meta:/neems_meta
       - mesh_data:/home/ros/mesh_data
     environment:
       # these are for docker-gen to recognize this container
@@ -95,7 +94,6 @@ services:
       - OPENEASE_MAIL_USERNAME=${OPENEASE_MAIL_USERNAME}
       #- OPENEASE_MAIL_PASSWORD=${OPENEASE_MAIL_PASSWORD}
       - OPENEASE_MESHES=${OPENEASE_MESHES}
-      - OPENEASE_ROS_DISTRIBUTION=${OPENEASE_ROS_DISTRIBUTION}
       - GITHUB_APP_ID=${GITHUB_APP_ID}
       - GITHUB_APP_SECRET=${GITHUB_APP_SECRET}
       - FACEBOOK_APP_SECRET=${FACEBOOK_APP_SECRET}
@@ -124,12 +122,6 @@ services:
     #- /var/run/docker.sock:/var/run/docker.sock
 volumes:
   neems:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: /NEEMs-ws
-  neems_meta:
     driver: local
     driver_opts:
       type: 'none'

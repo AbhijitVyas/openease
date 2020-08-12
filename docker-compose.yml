@@ -102,6 +102,9 @@ services:
       - TWITTER_APP_SECRET=${TWITTER_APP_SECRET}
       - GOOGLE_APP_SECRET=${GOOGLE_APP_SECRET}
       - GOOGLE_APP_ID=${GOOGLE_APP_ID}
+
+      # MongoDB readonly access pw for neems meta collections
+      - MONGO_PASS=${MONGO_PASS}
   #docker_compose_ui:
     #restart: always
     #image: francescou/docker-compose-ui:1.13.0

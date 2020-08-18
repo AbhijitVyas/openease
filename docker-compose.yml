@@ -42,7 +42,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - NEEM_DIR=/NEEMs
+      - NEEM_DIR=/home/abhijit/NEEMs
       - EASE_DEBUG=${EASE_DEBUG}
 
   # postgres is used to store e.g. user accounts, roles,
@@ -104,7 +104,7 @@ services:
       - GOOGLE_APP_ID=${GOOGLE_APP_ID}
 
       # MongoDB readonly access pw for neems meta collections
-      - MONGO_PASS=${MONGO_PASS}
+      - NEEMHUB_MONGO_PASS=${NEEMHUB_MONGO_PASS}
   #docker_compose_ui:
     #restart: always
     #image: francescou/docker-compose-ui:1.13.0
@@ -129,7 +129,7 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /NEEMs
+      device: /home/abhijit/NEEMs
   # TODO: this should be a more general NEEM data-depependencies volume.
   mesh_data: 
   # large file transfer volume

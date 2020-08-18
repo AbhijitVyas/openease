@@ -42,7 +42,7 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - NEEM_DIR=/home/abhijit/NEEMs
+      - NEEM_DIR=/NEEMs
       - EASE_DEBUG=${EASE_DEBUG}
 
   # postgres is used to store e.g. user accounts, roles,
@@ -129,7 +129,7 @@ volumes:
     driver_opts:
       type: 'none'
       o: 'bind'
-      device: /home/abhijit/NEEMs
+      device: /NEEMs
   # TODO: this should be a more general NEEM data-depependencies volume.
   mesh_data: 
   # large file transfer volume

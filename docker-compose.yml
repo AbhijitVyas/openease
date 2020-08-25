@@ -110,6 +110,7 @@ services:
       - MONGO_DATABASE=${MONGO_DATABASE}
       - MONGO_HOST=${MONGO_HOST}
       - MONGO_PORT=${MONGO_PORT}
+
   #docker_compose_ui:
     #restart: always
     #image: francescou/docker-compose-ui:1.13.0

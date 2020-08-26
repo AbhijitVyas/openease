@@ -44,6 +44,12 @@ services:
     environment:
       - NEEM_DIR=/NEEMs
       - EASE_DEBUG=${EASE_DEBUG}
+      - NEEMHUB_MONGO_PASS=${NEEMHUB_MONGO_PASS}
+      - NEEMHUB_MONGO_USER=${NEEMHUB_MONGO_USER}
+      - NEEMHUB_MONGO_DB=${NEEMHUB_MONGO_DB}
+      - NEEMHUB_MONGO_HOST=${NEEMHUB_MONGO_HOST}
+      - NEEMHUB_MONGO_PORT=${NEEMHUB_MONGO_PORT}
+
 
   # postgres is used to store e.g. user accounts, roles,
   # data displayed in the webpage
@@ -56,6 +62,7 @@ services:
       - postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=docker
+
 
   # a volume that holds a secret key
   secret_init:
@@ -105,11 +112,6 @@ services:
 
       # MongoDB readonly access pw for neems meta collections
       - NEEMHUB_MONGO_PASS=${NEEMHUB_MONGO_PASS}
-      - MONGO_USERNAME=${MONGO_USERNAME}
-      - MONGO_PASSWORD=${MONGO_PASSWORD}
-      - MONGO_DATABASE=${MONGO_DATABASE}
-      - MONGO_HOST=${MONGO_HOST}
-      - MONGO_PORT=${MONGO_PORT}
 
   #docker_compose_ui:
     #restart: always

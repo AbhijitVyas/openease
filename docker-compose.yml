@@ -84,7 +84,6 @@ services:
     volumes:
       - secret:/etc/ease_secret:ro
       - lft:/tmp/openEASE/dockerbridge
-      - neems:/neems
       - mesh_data:/home/ros/mesh_data
     environment:
       # these are for docker-gen to recognize this container
@@ -132,12 +131,6 @@ services:
     #volumes:
     #- /var/run/docker.sock:/var/run/docker.sock
 volumes:
-  neems:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: /NEEMs
   # TODO: this should be a more general NEEM data-depependencies volume.
   mesh_data: 
   # large file transfer volume

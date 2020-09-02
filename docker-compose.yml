@@ -44,11 +44,11 @@ services:
     environment:
       - NEEM_DIR=/NEEMs
       - EASE_DEBUG=${EASE_DEBUG}
-      - NEEMHUB_MONGO_PASS=${NEEMHUB_MONGO_PASS}
-      - NEEMHUB_MONGO_USER=${NEEMHUB_MONGO_USER}
-      - NEEMHUB_MONGO_DB=${NEEMHUB_MONGO_DB}
-      - NEEMHUB_MONGO_HOST=${NEEMHUB_MONGO_HOST}
-      - NEEMHUB_MONGO_PORT=${NEEMHUB_MONGO_PORT}
+      - KNOWROB_MONGO_PASS=${KNOWROB_MONGO_PASS}
+      - KNOWROB_MONGO_USER=${KNOWROB_MONGO_USER}
+      - KNOWROB_MONGO_DB=${KNOWROB_MONGO_DB}
+      - KNOWROB_MONGO_HOST=${KNOWROB_MONGO_HOST}
+      - KNOWROB_MONGO_PORT=${KNOWROB_MONGO_PORT}
 
 
   # postgres is used to store e.g. user accounts, roles,
@@ -110,7 +110,7 @@ services:
       - GOOGLE_APP_ID=${GOOGLE_APP_ID}
 
       # MongoDB readonly access pw for neems meta collections
-      - NEEMHUB_MONGO_PASS=${NEEMHUB_MONGO_PASS}
+      - KNOWROB_MONGO_PASS=${KNOWROB_MONGO_PASS}
 
   #docker_compose_ui:
     #restart: always

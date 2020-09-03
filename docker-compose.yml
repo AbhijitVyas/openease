@@ -110,6 +110,10 @@ services:
       - GOOGLE_APP_ID=${GOOGLE_APP_ID}
 
       # MongoDB readonly access pw for neems meta collections
+      - KNOWROB_MONGO_HOST=${KNOWROB_MONGO_HOST}
+      - KNOWROB_MONGO_PORT=${KNOWROB_MONGO_PORT}
+      - KNOWROB_MONGO_DB=${KNOWROB_MONGO_DB}
+      - KNOWROB_MONGO_USER=${KNOWROB_MONGO_USER}
       - KNOWROB_MONGO_PASS=${KNOWROB_MONGO_PASS}
 
   #docker_compose_ui:

@@ -44,6 +44,12 @@ services:
     environment:
       - NEEM_DIR=/NEEMs
       - EASE_DEBUG=${EASE_DEBUG}
+      - KNOWROB_MONGO_PASS=${KNOWROB_MONGO_PASS}
+      - KNOWROB_MONGO_USER=${KNOWROB_MONGO_USER}
+      - KNOWROB_MONGO_DB=${KNOWROB_MONGO_DB}
+      - KNOWROB_MONGO_HOST=${KNOWROB_MONGO_HOST}
+      - KNOWROB_MONGO_PORT=${KNOWROB_MONGO_PORT}
+
 
   # postgres is used to store e.g. user accounts, roles,
   # data displayed in the webpage
@@ -56,6 +62,7 @@ services:
       - postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=docker
+
 
   # a volume that holds a secret key
   secret_init:
@@ -77,7 +84,6 @@ services:
     volumes:
       - secret:/etc/ease_secret:ro
       - lft:/tmp/openEASE/dockerbridge
-      - neems:/neems
       - mesh_data:/home/ros/mesh_data
     environment:
       # these are for docker-gen to recognize this container
@@ -104,7 +110,8 @@ services:
       - GOOGLE_APP_ID=${GOOGLE_APP_ID}
 
       # MongoDB readonly access pw for neems meta collections
-      - NEEMHUB_MONGO_PASS=${NEEMHUB_MONGO_PASS}
+      - KNOWROB_MONGO_PASS=${KNOWROB_MONGO_PASS}
+
   #docker_compose_ui:
     #restart: always
     #image: francescou/docker-compose-ui:1.13.0
@@ -124,12 +131,6 @@ services:
     #volumes:
     #- /var/run/docker.sock:/var/run/docker.sock
 volumes:
-  neems:
-    driver: local
-    driver_opts:
-      type: 'none'
-      o: 'bind'
-      device: /NEEMs
   # TODO: this should be a more general NEEM data-depependencies volume.
   mesh_data: 
   # large file transfer volume

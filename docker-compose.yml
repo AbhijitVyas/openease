@@ -109,6 +109,8 @@ services:
       - TWITTER_APP_SECRET=${TWITTER_APP_SECRET}
       - GOOGLE_APP_SECRET=${GOOGLE_APP_SECRET}
       - GOOGLE_APP_ID=${GOOGLE_APP_ID}
+      # Mesh and URDF Server
+      - MESH_URDF_SERVER=${MESH_URDF_SERVER}
 
       # MongoDB readonly access pw for neems meta collections
       - KNOWROB_MONGO_HOST=${KNOWROB_MONGO_HOST}

@@ -44,11 +44,6 @@ services:
     environment:
       - NEEM_DIR=/NEEMs
       - EASE_DEBUG=${EASE_DEBUG}
-#      - KNOWROB_MONGO_PASS=${KNOWROB_MONGO_PASS}
-#      - KNOWROB_MONGO_USER=${KNOWROB_MONGO_USER}
-#      - KNOWROB_MONGO_DB=${KNOWROB_MONGO_DB}
-#      - KNOWROB_MONGO_HOST=${KNOWROB_MONGO_HOST}
-#      - KNOWROB_MONGO_PORT=${KNOWROB_MONGO_PORT}
 
 
   # postgres is used to store e.g. user accounts, roles,
@@ -112,12 +107,6 @@ services:
       # Mesh and URDF Server
       - MESH_URDF_SERVER=${MESH_URDF_SERVER}
 
-      # MongoDB readonly access pw for neems meta collections
-#      - KNOWROB_MONGO_HOST=${KNOWROB_MONGO_HOST}
-#      - KNOWROB_MONGO_PORT=${KNOWROB_MONGO_PORT}
-#      - KNOWROB_MONGO_DB=${KNOWROB_MONGO_DB}
-#      - KNOWROB_MONGO_USER=${KNOWROB_MONGO_USER}
-#      - KNOWROB_MONGO_PASS=${KNOWROB_MONGO_PASS}
 
   #docker_compose_ui:
     #restart: always
